@@ -1,5 +1,6 @@
 import requests
 import constants
+from tqdm import tqdm
 
 
 def get_group_variables(group_name_desc: dict):
@@ -30,7 +31,7 @@ def get_group_variables(group_name_desc: dict):
 def get_raw_data(columns):
     base_url = 'https://api.census.gov/data/2018/acs/acs5'
     data = None
-    for c in constants.counties_fips:
+    for c in tqdm(constants.counties_fips):
         parameters = {
             'for': 'block group:*',
             'in': f'state:{constants.state_fips} county:{c}',
@@ -40,8 +41,7 @@ def get_raw_data(columns):
         if not data:
             data = requests.get(base_url, params=parameters).json()
         else:
-            data = requests.get(base_url, params=parameters)[1:]
-        print('here')
+            data = requests.get(base_url, params=parameters).json()[1:]
     return data
 
 

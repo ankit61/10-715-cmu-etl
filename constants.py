@@ -12,13 +12,14 @@ def get_counties():
     params = {
         'get': 'NAME',
         'for': 'county:*',
+        'in' : f'state:{state_fips}',
         'key': key
     }
 
     counties = np.array(
-                    requests.get(base_url, params=params).json()[0:]
+                    requests.get(base_url, params=params).json()[1:]
                 )
 
-    return  counties[:, 1], counties[:, 0]
+    return  counties[:, 2], counties[:, 0]
 
 counties_fips, county_names = get_counties()
