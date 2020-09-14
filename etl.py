@@ -1,5 +1,6 @@
 import requests
-import constatns
+import constants
+
 
 def get_group_variables(group_name_desc: dict):
     general_link = 'https://api.census.gov/data/2018/acs/acs5/groups.json'
@@ -23,7 +24,8 @@ def get_group_variables(group_name_desc: dict):
                     estimate_fields[f] = fields[f]['label']
 
             group_vars[d['name']] = estimate_fields
-
+    
+    return group_vars
 
 def get_raw_data(columns):
     base_url = 'https://api.census.gov/data/2018/acs/acs5'
