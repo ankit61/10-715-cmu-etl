@@ -1,6 +1,7 @@
 import constants
 import os
 from stat import S_IREAD, S_IGRP, S_IROTH
+from data_extractor import get_column_names, get_estimate_columns
 
 
 class SQLWriter():
@@ -12,7 +13,13 @@ class SQLWriter():
 
             schema_stmt = self.gen_schema_stmt()
             create_stmt = self.gen_create_table_stmt(data)
-            comments_stmt = self.gen_column_comments_stmts()
+
+            cols = get_column_names(data)
+
+            col_comments = \
+                {c: comment for c, comment in zip(cols, get_column_names(cols))}
+
+            comments_stmt = self.gen_column_comments_stmts(col_comments)
             copy_stmt = self.gen_copy_stmt(data)
 
             stmts = [

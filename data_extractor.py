@@ -17,6 +17,8 @@ def get_column_names(columns):
     d = requests.get(column_name_url, headers=constants.headers).json()['variables']
     return [d[c]['concept'].title() + ' | ' + re.sub('!!', ' | ', d[c]['label']) for c in columns]
 
+def get_estimate_columns(data):
+    return data.columns[:-4]
 
 class DataExtractor():
     def extract(self, group_name_desc=None, percent_form=True):
