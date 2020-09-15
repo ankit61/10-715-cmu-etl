@@ -56,7 +56,7 @@ class SQLWriter():
             for c in data.columns
         ]
         return \
-            f'CREATE TABLE IF NOT EXISTS {schema_name}.{table_name} (\n' + \
+            f'CREATE TABLE IF NOT EXISTS {schema_name}.{table_name} (\n\t' + \
                 f'{f",{nl + tc}".join(cols)}' + \
             '\n);'
 
