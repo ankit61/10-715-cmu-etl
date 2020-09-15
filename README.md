@@ -16,5 +16,9 @@ python main.py # will generate a create.sql file in the current working director
 psql -h mlpolicylab.db.dssg.io -U {YOUR_ANDREW_ID} schools3_database -f create.sql # to execute the sql file
 ```
 
-### Database Location
+### Table Information
 
+The table is located in the `schools3` database and `etl_ankit` schema with name `family_influence` (`Object ID: 2698042`). It has 41 columns and 9238 rows. The column names resemble those that are found on the [ACS website](https://api.census.gov/data/2018/acs/acs5/variables.html). However, since the column names are not that descriptive, each column has a comment containing longer descriptions.
+
+
+### Code Generalizability & Modularity
