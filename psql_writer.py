@@ -50,13 +50,14 @@ class SQLWriter():
             'object': 'VARCHAR'
         }
         nl = '\n'
+        tc = '\t'
         cols = [
             c.lower().replace(" ", "_") + " " + types_dict[str(data[c].dtype)]
             for c in data.columns
         ]
         return \
             f'CREATE TABLE IF NOT EXISTS {schema_name}.{table_name} (\n' + \
-                f'{f",{nl}".join(cols)}' + \
+                f'{f",{nl + tc}".join(cols)}' + \
             '\n);'
 
 
