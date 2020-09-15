@@ -51,12 +51,14 @@ def get_raw_data(columns):
     for c in columns:
         df[c] = df[c].astype(np.float)
 
-    df = df.rename({c: nc for c, nc in zip(columns, get_column_names(columns))}, axis=1)
+    #df = df.rename({c: nc for c, nc in zip(columns, get_column_names(columns))}, axis=1)
     return df
+
 
 def get_prefix(name):
     split = name.split('!!')
     return '!!'.join(split[:-1])
+
 
 def get_percent_form(data, group_vars):
     for g in group_vars:
@@ -84,13 +86,16 @@ def get_percent_form(data, group_vars):
 
     return data
 
+
 def get_column_names(columns):
     column_name_url = 'https://api.census.gov/data/2018/acs/acs5/variables.json'
     d = requests.get(column_name_url, headers=constants.headers).json()['variables']
     return [d[c]['concept'].title() + ' | ' + re.sub('!!', ' | ', d[c]['label']) for c in columns]
 
+
 def write_to_csv(data, filename):
     pass
+
 
 def write_to_postgres(csv_filename):
     pass
