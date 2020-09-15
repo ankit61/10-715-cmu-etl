@@ -1,6 +1,7 @@
 import requests
 import numpy as np
 
+# data extractor params
 key = '184fc9798e379fa4bb145284a3c6f3f8e5ff7fb2'
 headers = {
     'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:80.0) Gecko/20100101 Firefox/80.0',
@@ -23,3 +24,17 @@ def get_counties():
     return  counties[:, 2], counties[:, 0]
 
 counties_fips, county_names = get_counties()
+
+group_name_desc = {
+    'B08303': 'TRAVEL TIME TO WORK',
+    'B09018': 'RELATIONSHIP TO HOUSEHOLDER FOR CHILDREN UNDER 18 YEARS IN HOUSEHOLDS',
+    'B11016': 'HOUSEHOLD TYPE BY HOUSEHOLD SIZE',
+    'B09005': 'HOUSEHOLD TYPE FOR CHILDREN UNDER 18 YEARS IN HOUSEHOLDS (EXCLUDING HOUSEHOLDERS, SPOUSES, AND UNMARRIED PARTNERS)'
+}
+
+# sql params
+csv_path = 'family_influence.csv'
+
+sql_file = 'create.sql'
+schema_name = 'etl'
+table_name = 'family_influence'
