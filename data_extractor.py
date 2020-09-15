@@ -3,6 +3,7 @@ import requests
 from tqdm import tqdm
 import pandas as pd
 import numpy as np
+import re
 
 __all__ = ['DataExtractor', 'get_column_names']
 
