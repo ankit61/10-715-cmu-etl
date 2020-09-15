@@ -36,5 +36,5 @@ group_name_desc = {
 csv_path = 'family_influence.csv'
 
 sql_file = 'create.sql'
-schema_name = 'etl'
+schema_name = 'etl_ankit'
 table_name = 'family_influence'
