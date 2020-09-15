@@ -16,8 +16,10 @@ def get_column_names(columns):
     d = requests.get(column_name_url, headers=constants.headers).json()['variables']
     return [d[c]['concept'].title() + ' | ' + re.sub('!!', ' | ', d[c]['label']) for c in columns]
 
+
 def get_estimate_columns(data):
     return data.columns[:-4]
+
 
 class DataExtractor():
     def extract(self, group_name_desc=None, percent_form=True):
@@ -64,8 +66,8 @@ class DataExtractor():
         data = None
         for c in tqdm(constants.counties_fips):
             parameters = {
-                'for': 'block group:*',
-                'in': f'state:{constants.state_fips} county:{c}',
+                'for': constants.for_param,
+                'in': constants.get_in_param(constants.state_fips, c),
                 'get': ','.join(columns),
                 'key': constants.key
             }
@@ -73,7 +75,7 @@ class DataExtractor():
                 data = requests.get(base_url, params=parameters).json()
             else:
                 data += requests.get(base_url, params=parameters).json()[1:]
-        
+
         df = pd.DataFrame(data[1:], columns=data[0])
         for c in columns:
             df[c] = df[c].astype(np.float)

@@ -8,6 +8,10 @@ headers = {
 }
 state_fips = 39
 
+for_param = 'block group:*'
+get_in_param = lambda state, county: f'state:{state} county:{county}'
+
+
 def get_counties():
     base_url = 'https://api.census.gov/data/2018/acs/acs5'
     params = {
