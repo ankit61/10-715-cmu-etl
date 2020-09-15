@@ -2,11 +2,16 @@ import logging
 import constants
 import os
 from stat import S_IREAD, S_IRGRP, S_IROTH
-from data_extractor import get_column_names, get_estimate_columns
+from data_extractor import *
 
 
 class SQLWriter():
     def write(self, data, out_file=constants.sql_file):
+        '''
+            the main function of the class responsible for creating a SQL file
+            with statements to create the schema and table, annotate the columns
+            and copy the data from a CSV file.
+        '''
         if os.path.exists(out_file):
             logging.warning(f'{out_file} already exists. Overwriting...')
 
@@ -38,12 +43,16 @@ class SQLWriter():
 
         os.chmod(out_file, S_IREAD|S_IRGRP|S_IROTH)
 
-
     def gen_schema_stmt(self, schema_name=constants.schema_name):
+        '''
+            returns the CREATE SCHEMA statement
+        '''
         return f'CREATE SCHEMA IF NOT EXISTS {schema_name};'
 
-
     def gen_create_table_stmt(self, data, table_name=constants.table_name, schema_name=constants.schema_name):
+        '''
+            returns the CREATE TABLE statement
+        '''
         types_dict = {
             'float64': 'DECIMAL',
             'object': 'VARCHAR'
@@ -59,18 +68,23 @@ class SQLWriter():
                 f'{f",{nl + tc}".join(cols)}' + \
             '\n);'
 
-
     def gen_column_comments_stmts(self, col_descs: dict, table_name=constants.table_name,
         schema_name=constants.schema_name
     ):
+        '''
+            returns SQL statements that annotate the columns of the table
+        '''
         comments = []
         for k, v in col_descs.items():
             comments.append(f"COMMENT ON COLUMN {schema_name}.{table_name}.{k} IS '{v}';")
 
         return '\n'.join(comments)
 
-
     def gen_copy_stmt(self, data, table_name=constants.table_name, schema_name=constants.schema_name):
+        '''
+            returns the statement that allows PostgreSQL to copy data from CSV
+            to table
+        '''
         if not os.path.exists(constants.csv_path):
             data.to_csv(constants.csv_path, index=False)
             os.chmod(constants.csv_path, S_IREAD|S_IRGRP|S_IROTH)

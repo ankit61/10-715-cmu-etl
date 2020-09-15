@@ -1,28 +1,43 @@
-import constants
-import requests
-from tqdm import tqdm
+import re
 import pandas as pd
 import numpy as np
-import re
+from tqdm import tqdm
+import requests
+import constants
 
 
 def get_prefix(name):
+    '''
+        helper function to simply get the prefix of a variable name
+    '''
     split = name.split('!!')
     return '!!'.join(split[:-1])
 
 
-def get_column_names(columns):
-    column_name_url = f'https://api.census.gov/data/{constants.year}/acs/acs5/variables.json'
+def get_column_descs(columns):
+    '''
+        helper function to get descriptions of given abbreviated column names
+    '''
+    column_name_url = constants.all_variables_link
     d = requests.get(column_name_url, headers=constants.headers).json()['variables']
     return [d[c]['concept'].title() + ' | ' + re.sub('!!', ' | ', d[c]['label']) for c in columns]
 
 
 def get_estimate_columns(data):
+    '''
+        helper function to get column names of all fields that are numeric
+        and contain quantitive data
+    '''
     return data.columns[:-4]
 
 
 class DataExtractor():
     def extract(self, group_name_desc=None, percent_form=True):
+        '''
+            main function of the class to extract all data from ACS APIs in
+            either percent format or raw format given the variable groups of
+            interest
+        '''
         if group_name_desc is None:
             group_name_desc = constants.group_name_desc
 
@@ -37,9 +52,13 @@ class DataExtractor():
         return data
 
     def get_group_variables(self, group_name_desc: dict):
-        general_link = f'https://api.census.gov/data/{constants.year}/acs/acs5/groups.json'
+        '''
+            given group variables, the function returns names of all individual
+            estimate variables which will be used to query APIs later
+        '''
+        groups_link = constants.groups_link
 
-        groups = requests.get(general_link).json()['groups']
+        groups = requests.get(groups_link).json()['groups']
 
         group_vars = {}
         for d in groups:
@@ -49,8 +68,8 @@ class DataExtractor():
                     d['description'].lower() == group_name_desc[d['name']].lower(),\
                     f'{d["name"]} and {group_name_desc[d["name"]]} do not match'
 
-                group_link = f'https://api.census.gov/data/{constants.year}/acs/acs5/groups/{d["name"]}.json'
-                fields = requests.get(group_link).json()['variables']
+                group_vars_link = constants.get_group_vars_link(d['name'])
+                fields = requests.get(group_vars_link).json()['variables']
 
                 estimate_fields = {}
                 for f in fields:
@@ -62,7 +81,11 @@ class DataExtractor():
         return group_vars
 
     def get_raw_data(self, columns):
-        base_url = f'https://api.census.gov/data/{constants.year}/acs/acs5'
+        '''
+            given column names, query APIs to return raw data in pandas
+            dataframe style
+        '''
+        base_url = constants.raw_data_base_link
         data = None
         for c in tqdm(constants.counties_fips):
             parameters = {
@@ -83,6 +106,10 @@ class DataExtractor():
         return df
 
     def get_percent_form(self, data, group_vars):
+        '''
+            given raw data and variables with their column descriptions, convert
+            raw population counts into percentages
+        '''
         for g in group_vars:
             links = {}
             labels = {}
