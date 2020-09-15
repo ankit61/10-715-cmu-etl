@@ -12,7 +12,7 @@ def get_prefix(name):
 
 
 def get_column_names(columns):
-    column_name_url = 'https://api.census.gov/data/2018/acs/acs5/variables.json'
+    column_name_url = f'https://api.census.gov/data/{constants.year}/acs/acs5/variables.json'
     d = requests.get(column_name_url, headers=constants.headers).json()['variables']
     return [d[c]['concept'].title() + ' | ' + re.sub('!!', ' | ', d[c]['label']) for c in columns]
 
@@ -37,7 +37,7 @@ class DataExtractor():
         return data
 
     def get_group_variables(self, group_name_desc: dict):
-        general_link = 'https://api.census.gov/data/2018/acs/acs5/groups.json'
+        general_link = f'https://api.census.gov/data/{constants.year}/acs/acs5/groups.json'
 
         groups = requests.get(general_link).json()['groups']
 
@@ -49,7 +49,7 @@ class DataExtractor():
                     d['description'].lower() == group_name_desc[d['name']].lower(),\
                     f'{d["name"]} and {group_name_desc[d["name"]]} do not match'
 
-                group_link = f'https://api.census.gov/data/2018/acs/acs5/groups/{d["name"]}.json'
+                group_link = f'https://api.census.gov/data/{constants.year}/acs/acs5/groups/{d["name"]}.json'
                 fields = requests.get(group_link).json()['variables']
 
                 estimate_fields = {}
@@ -62,7 +62,7 @@ class DataExtractor():
         return group_vars
 
     def get_raw_data(self, columns):
-        base_url = 'https://api.census.gov/data/2018/acs/acs5'
+        base_url = f'https://api.census.gov/data/{constants.year}/acs/acs5'
         data = None
         for c in tqdm(constants.counties_fips):
             parameters = {

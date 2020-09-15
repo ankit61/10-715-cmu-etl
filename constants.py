@@ -1,19 +1,29 @@
 import requests
 import numpy as np
 
+
+# important constants
+state_fips = 39
+for_param = 'block group:*'
+year = 2018
+group_name_desc = {
+    'B08303': 'TRAVEL TIME TO WORK',
+    'B09018': 'RELATIONSHIP TO HOUSEHOLDER FOR CHILDREN UNDER 18 YEARS IN HOUSEHOLDS',
+    'B11016': 'HOUSEHOLD TYPE BY HOUSEHOLD SIZE'
+}
+
+
 # data extractor params
 key = '184fc9798e379fa4bb145284a3c6f3f8e5ff7fb2'
 headers = {
     'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:80.0) Gecko/20100101 Firefox/80.0',
 }
-state_fips = 39
 
-for_param = 'block group:*'
 get_in_param = lambda state, county: f'state:{state} county:{county}'
 
 
 def get_counties():
-    base_url = 'https://api.census.gov/data/2018/acs/acs5'
+    base_url = f'https://api.census.gov/data/{year}/acs/acs5'
     params = {
         'get': 'NAME',
         'for': 'county:*',
@@ -22,18 +32,13 @@ def get_counties():
     }
 
     counties = np.array(
-                    requests.get(base_url, params=params).json()[1:]
-                )
+                requests.get(base_url, params=params).json()[1:]
+            )
 
     return  counties[:, 2], counties[:, 0]
 
 counties_fips, county_names = get_counties()
 
-group_name_desc = {
-    'B08303': 'TRAVEL TIME TO WORK',
-    'B09018': 'RELATIONSHIP TO HOUSEHOLDER FOR CHILDREN UNDER 18 YEARS IN HOUSEHOLDS',
-    'B11016': 'HOUSEHOLD TYPE BY HOUSEHOLD SIZE'
-}
 
 # sql params
 csv_path = 'family_influence.csv'

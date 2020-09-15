@@ -3,7 +3,6 @@ import constants
 import os
 from stat import S_IREAD, S_IRGRP, S_IROTH
 from data_extractor import get_column_names, get_estimate_columns
-import re
 
 
 class SQLWriter():
