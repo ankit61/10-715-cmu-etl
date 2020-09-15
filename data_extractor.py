@@ -5,8 +5,6 @@ import pandas as pd
 import numpy as np
 import re
 
-__all__ = ['DataExtractor', 'get_column_names']
-
 
 def get_prefix(name):
     split = name.split('!!')
