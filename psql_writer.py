@@ -1,6 +1,6 @@
 import constants
 import os
-from stat import S_IREAD, S_IGRP, S_IROTH
+from stat import S_IREAD, S_IRGRP, S_IROTH
 
 
 class SQLWriter():
@@ -27,7 +27,7 @@ class SQLWriter():
                 f.write('\n\n')
 
 
-        os.chmod(out_file, S_IREAD|S_IGRP|S_IROTH)
+        os.chmod(out_file, S_IREAD|S_IRGRP|S_IROTH)
 
 
     def gen_schema_stmt(self, schema_name=constants.schema_name):
