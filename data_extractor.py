@@ -11,7 +11,7 @@ def get_prefix(name):
         helper function to simply get the prefix of a variable name
     '''
     split = name.split('!!')
-    return '!!'.join(split[:-1])
+    return '!!'.join(split[:2])
 
 
 def get_column_descs(columns):
