@@ -117,13 +117,14 @@ class DataExtractor():
 
             for k, name in group_vars[g].items():
                 prefix = get_prefix(name)
-                links[name] = prefix
-                labels[name] = k
+                if name != prefix:
+                    links[name] = prefix
+                    labels[name] = k
 
-                if prefix in num_pointing:
-                    num_pointing[prefix] += 1
-                else:
-                    num_pointing[prefix] = 1
+                    if prefix in num_pointing:
+                        num_pointing[prefix] += 1
+                    else:
+                        num_pointing[prefix] = 1
 
             for k in sorted(links, key=lambda x: -len(x.split('!!'))):
                 prefix = links[k]
