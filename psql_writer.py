@@ -76,7 +76,8 @@ class SQLWriter():
         '''
         comments = []
         for k, v in col_descs.items():
-            comments.append(f"COMMENT ON COLUMN {schema_name}.{table_name}.{k} IS '{v}';")
+            comm = v.replace('\'','')
+            comments.append(f"COMMENT ON COLUMN {schema_name}.{table_name}.{k} IS '{comm}';")
 
         return '\n'.join(comments)
 
