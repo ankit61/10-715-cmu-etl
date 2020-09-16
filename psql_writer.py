@@ -23,7 +23,7 @@ class SQLWriter():
             cols = get_estimate_columns(data)
 
             col_comments = \
-                {c: comment for c, comment in zip(cols, get_column_names(cols))}
+                {c: comment for c, comment in zip(cols, get_column_descs(cols))}
 
             comments_stmt = self.gen_column_comments_stmts(col_comments)
             copy_stmt = self.gen_copy_stmt(data)
