@@ -48,7 +48,7 @@ raw_data_base_link  = f'https://api.census.gov/data/{year}/acs/acs5'
 # sql params
 sql_file = 'create.sql'
 schema_name = 'etl_ankit'
-table_name = 'family_influence'
+table_name = 'schools_external_factors'
 
 csv_path = f'{table_name}.csv'
 
