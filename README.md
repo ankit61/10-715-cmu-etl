@@ -3,7 +3,7 @@ Code for ETL Assignment for 10-715 at CMU
 
 ### Instructions to run
 
-The instructions are contained in the PDF document submitted on canvas. Running them will not 
+The instructions are contained in the PDF document submitted on canvas. As explained there, running `python main.py` will generate a .sql file and .csv file (if not already present). Executing the .sql file with psql will create the actual table in PostgreSQL. To show the output of these generated files, they have also been uploaded to this repository.
 
 ### Table Information
 
