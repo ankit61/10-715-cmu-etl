@@ -113,25 +113,16 @@ class DataExtractor():
         for g in group_vars:
             links = {}
             labels = {}
-            num_pointing = {}
 
             for k, name in group_vars[g].items():
                 prefix = get_prefix(name)
+                labels[name] = k
                 if name != prefix:
                     links[name] = prefix
-                    labels[name] = k
-
-                    if prefix in num_pointing:
-                        num_pointing[prefix] += 1
-                    else:
-                        num_pointing[prefix] = 1
 
             for k in sorted(links, key=lambda x: -len(x.split('!!'))):
                 prefix = links[k]
-                if prefix in links:
-                    smoothed_denom = data[labels[prefix]] + num_pointing[prefix]
-                    smoothed_numer = data[labels[k]] + 1
-
-                    data[labels[k]] = smoothed_numer / smoothed_denom
+                if labels[prefix] in data.columns:
+                    data[labels[k]] = data[labels[k]] / data[labels[prefix]]
 
         return data
