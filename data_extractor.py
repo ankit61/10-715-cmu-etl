@@ -6,12 +6,17 @@ import requests
 import constants
 
 
-def get_prefix(name):
+def get_base_category(name):
     '''
-        helper function to simply get the prefix of a variable name
+        helper function to simply get the base category of a variable name
     '''
-    split = name.split('!!')
-    return '!!'.join(split[:2])
+    return '!!'.join(name.split('!!')[:2])
+
+def get_parent_category(name):
+    '''
+        helper function to simply get the parent prefix of a variable name
+    '''
+    return '!!'.join(name.split('!!')[:-1])
 
 
 def get_column_descs(columns):
@@ -113,16 +118,25 @@ class DataExtractor():
         for g in group_vars:
             links = {}
             labels = {}
+            smoothing_num = {name: 0 for _, name in group_vars[g].items()}
 
-            for k, name in group_vars[g].items():
-                prefix = get_prefix(name)
+            sorted_col_names = \
+                sorted(group_vars[g].items(), key=lambda x: -len(x[1].split('!!')))
+
+            for k, name in sorted_col_names:
+                base_cat = get_base_category(name)
                 labels[name] = k
-                if name != prefix:
-                    links[name] = prefix
+                smoothing_num[name] += 1
+                smoothing_num[get_parent_category(name)] += 1
+                if name != base_cat:
+                    links[name] = base_cat
 
             for k in sorted(links, key=lambda x: -len(x.split('!!'))):
-                prefix = links[k]
-                if labels[prefix] in data.columns:
-                    data[labels[k]] = data[labels[k]] / data[labels[prefix]]
+                base_cat = links[k]
+                if labels[base_cat] in data.columns:
+                    smoothed_numer = (data[labels[k]] + smoothing_num[k])
+                    smoothed_denom = (data[labels[base_cat]] + smoothing_num[base_cat])
+ 
+                    data[labels[k]] = smoothed_numer / smoothed_denom
 
         return data
