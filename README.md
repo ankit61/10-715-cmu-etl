@@ -3,11 +3,11 @@ Code for ETL Assignment for 10-715 at CMU
 
 ### Instructions to run
 
-The instructions are contained in the PDF document submitted on canvas. As explained there, running `python main.py` will generate a .sql file and .csv file (if not already present). Executing the .sql file with psql will create the actual table in PostgreSQL. To show the output of these generated files, they have also been uploaded to this repository.
+The instructions are contained in the PDF document submitted on canvas.
 
 ### Table Information
 
-The table is located in the `schools3` database and `etl_ankit` schema with name `schools_external_factors`. It has 52 columns and 9238 rows. The column names resemble those that are found on the [ACS website](https://api.census.gov/data/2018/acs/acs5/variables.html). However, since the column names are not that descriptive, each column has a comment containing longer descriptions.
+The table is located in the `schools3_database` database and `etl_ankit` schema with name `schools_external_factors`. It has 52 columns and 9238 rows. The column names resemble those that are found on the [ACS website](https://api.census.gov/data/2018/acs/acs5/variables.html). However, since the column names are not that descriptive, each column has a comment containing longer descriptions.
 
 
 ### Code Flexiblity & Modularity
