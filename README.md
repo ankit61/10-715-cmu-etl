@@ -14,7 +14,7 @@ The table is located in the `schools3_database` database and `etl_ankit` schema 
 
 The code has been written in a highly flexible manner to aid in its incorporation in the final project. All parameters/constants in the code are stored in a separate file named constants.py. The state, the granularity level, the year of survey, and the variables of interest can all be very easily changed in the constants.py file.
 
-Further, the code is also very modular, and has a clear separation between the part that does the extraction of data and the part that does the creation of the SQL file.
+Further, the code is also very modular, and has a clear separation between the part that does the extraction of data and the part that does the creation of PostgreSQL table.
 
 ### Transforming Variables
 
