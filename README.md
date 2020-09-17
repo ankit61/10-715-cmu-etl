@@ -15,3 +15,7 @@ The table is located in the `schools3` database and `etl_ankit` schema with name
 The code has been written in a highly flexible manner to aid in its incorporation in the final project. All parameters/constants in the code are stored in a separate file named constants.py. The state, the granularity level, the year of survey, and the variables of interest can all be very easily changed in the constants.py file.
 
 Further, the code is also very modular, and has a clear separation between the part that does the extraction of data and the part that does the creation of the SQL file.
+
+### Transforming Variables
+
+All variables we chose from the 5-year ACS survey API are only available in the form of raw counts. Consequently, all raw counts are going to be strongly correlated to the population in the block, which is undesirable. Therefore, we convert the estimates obtained from the ACS API to percentage estimates by dividing each field by the total sample size. Further, since estimates from ACS survey may not be fully accurate, it is likely that attributes that occur very rarely in the population are highly underestimated. Therefore, to prevent underrepresented attributes from being more underrepresented in the data, we use [Laplace smoothing](https://en.wikipedia.org/wiki/Additive_smoothing). We basically just add 1 to the most specific/granular fields in the data and also accordingly adjust the total sample size. This technique ensures that highly underrepresented groups do not show up as occuring with 0% probability.
