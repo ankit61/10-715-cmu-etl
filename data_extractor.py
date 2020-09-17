@@ -125,9 +125,15 @@ class DataExtractor():
 
             for k, name in sorted_col_names:
                 base_cat = get_base_category(name)
+                parent_cat = get_parent_category(name)
+
                 labels[name] = k
-                smoothing_num[name] += 1
-                smoothing_num[get_parent_category(name)] += 1
+
+                if parent_cat in smoothing_num:
+                    if smoothing_num[name] == 0:
+                        smoothing_num[name] += 1
+                    smoothing_num[parent_cat] += smoothing_num[name]
+
                 if name != base_cat:
                     links[name] = base_cat
 
