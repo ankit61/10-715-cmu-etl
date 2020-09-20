@@ -1,5 +1,5 @@
-# 10-715-cmu-etl
-Code for ETL Assignment for 10-715 at CMU
+# 10-718-cmu-etl
+Code for ETL Assignment for 10-718 at CMU
 
 ### Instructions to run
 
